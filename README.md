@@ -1,4 +1,4 @@
-# P3R-Save-Editor
+# P3R | Save Editor
 Persona3 Reload | Save Editor (Steam)
 A tool to edit : Money, Firstname, Lastname (can don't work), Player current PC/PV
 I could possibly add other functions (Persona, object, character location...)
