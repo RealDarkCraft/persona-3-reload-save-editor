@@ -493,4 +493,11 @@ class Persona3Save:
                         break
                 except:
                     pass
-a=OpenSave().Load(os.path.split(os.path.abspath("SaveData001.sav"))[0],0,os.path.split(os.path.abspath("SaveData001.sav"))[1],True)#input("Persona3 Reload sav path"),0,)
+while True:
+    try:
+        a=input("Persona3 Reload sav path : ").replace('"',"")
+        a=OpenSave().Load(os.path.split(os.path.abspath(a))[0],0,os.path.split(os.path.abspath(a))[1],True)
+    except FileNotFoundError:
+        print("Bad path\n")
+    except PermissionError:
+        print("Permission error or Bad path error\n")
