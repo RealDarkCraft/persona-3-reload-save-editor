@@ -500,4 +500,4 @@ class Persona3Save:
                 except:
                     pass
 a=OpenSave().Load("SaveData001.sav",0)
-print(a.Data)
+#print(a.Data)
