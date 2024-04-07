@@ -182,7 +182,7 @@ class Persona3Save:
                 if i["type"]== name:
                     if int.from_bytes(binascii.unhexlify(str(i["padding"])),byteorder="little") == n:
                         js.remove(i)
-                        return js
+            return js
     def SaveByName(self, js, name, mode, header, nvar, static, lenn=None, dummy=None):
         c = 0
         d = 0
@@ -262,61 +262,73 @@ class Persona3Save:
         while True:
             new_name=input("New LastName (10 char max | put nothing to cancel): ")
             if len(new_name)<=10 and len(new_name)>0:
-                self.js[1]["value"]=self.SaveByName(self.js[1]["value"],"LastName",1,1,new_name,"01000000",self.SaveHeader["LenLastName"],'{"type": "Int8Property", "name": name,"padding_static":static,"padding":self.int_to_hex(x_hex), "value": ord(nvar[c - 1])}')
-                self.SaveHeader["lastname"] = new_name
-                self.SaveHeader["LenLastName"]=len(new_name)
-                if len(new_name) < 5:
-                    a=1
-                elif len(new_name) <9:
-                    a=2
-                else:
-                    a=3
-                if a == 1:
-                    self.js=self.SaveByNameN(self.js, "UInt32Property", 0, self.str_to_int(new_name),17951)
-                    self.js=self.DelByNameN(self.js, "UInt32Property", 0,17952)
-                    self.js=self.DelByNameN(self.js, "UInt32Property", 0,17953)
-                elif a ==2:
-                    self.js=self.SaveByNameN(self.js, "UInt32Property", 0, self.str_to_int(new_name[0:4]),17951)
-                    self.js=self.SaveByNameN(self.js, "UInt32Property", 0, self.str_to_int(new_name[4:len(new_name)]),17952)
-                    self.js=self.DelByNameN(self.js, "UInt32Property", 0,17953)
-                elif a ==3:
-                    self.js=self.SaveByNameN(self.js, "UInt32Property", 0, self.str_to_int(new_name[0:4]),17951)
-                    self.js=self.SaveByNameN(self.js, "UInt32Property", 0, self.str_to_int(new_name[4:8]),17952)
-                    self.js=self.SaveByNameN(self.js, "UInt32Property", 0, self.str_to_int(new_name[8:len(new_name)]),17953)
-                    
-                    
-                print(new_name)
-                break
+                aaa=True
+                for i in new_name:
+                    if len(binascii.hexlify(i.encode()).decode()) > 2:
+                        aaa=False
+                
+                if aaa == True:
+                    self.js[1]["value"]=self.SaveByName(self.js[1]["value"],"LastName",1,1,new_name,"01000000",self.SaveHeader["LenLastName"],'{"type": "Int8Property", "name": name,"padding_static":static,"padding":self.int_to_hex(x_hex), "value": ord(nvar[c - 1])}')
+                    self.SaveHeader["lastname"] = new_name
+                    self.SaveHeader["LenLastName"]=len(new_name)
+                    if len(new_name) < 5:
+                        a=1
+                    elif len(new_name) <9:
+                        a=2
+                    else:
+                        a=3
+                    if a == 1:
+                        self.js=self.SaveByNameN(self.js, "UInt32Property", 0, self.str_to_int(new_name),17951)
+                        self.js=self.DelByNameN(self.js, "UInt32Property", 0,17952)
+                        self.js=self.DelByNameN(self.js, "UInt32Property", 0,17953)
+                    elif a ==2:
+                        self.js=self.SaveByNameN(self.js, "UInt32Property", 0, self.str_to_int(new_name[0:4]),17951)
+                        self.js=self.SaveByNameN(self.js, "UInt32Property", 0, self.str_to_int(new_name[4:len(new_name)]),17952)
+                        self.js=self.DelByNameN(self.js, "UInt32Property", 0,17953)
+                    elif a ==3:
+                        self.js=self.SaveByNameN(self.js, "UInt32Property", 0, self.str_to_int(new_name[0:4]),17951)
+                        self.js=self.SaveByNameN(self.js, "UInt32Property", 0, self.str_to_int(new_name[4:8]),17952)
+                        self.js=self.SaveByNameN(self.js, "UInt32Property", 0, self.str_to_int(new_name[8:len(new_name)]),17953)
+                        
+                        
+                    print(new_name)
+                    break
             elif len(new_name)==0:
                 break
     def FirstName(self):
         while True:
             new_name=input("New FirstName (10 char max | put nothing to cancel): ")
             if len(new_name)<=10 and len(new_name)>0:
-                self.js[1]["value"]=self.SaveByName(self.js[1]["value"],"FirstName",1,1,new_name,"01000000",self.SaveHeader["LenFirstName"],'{"type": "Int8Property", "name": name,"padding_static":static,"padding":self.int_to_hex(x_hex), "value": ord(nvar[c - 1])}')
-                self.SaveHeader["firstname"] = new_name
-                self.SaveHeader["LenFirstName"]=len(new_name)
-                if len(new_name) < 5:
-                    a=1
-                elif len(new_name) <9:
-                    a=2
-                else:
-                    a=3
-                if a == 1:
-                    self.js=self.SaveByNameN(self.js, "UInt32Property", 0, self.str_to_int(new_name),17935)
-                    self.js=self.DelByNameN(self.js, "UInt32Property", 0,17936)
-                    self.js=self.DelByNameN(self.js, "UInt32Property", 0,17937)
-                elif a ==2:
-                    self.js=self.SaveByNameN(self.js, "UInt32Property", 0, self.str_to_int(new_name[0:4]),17935)
-                    self.js=self.SaveByNameN(self.js, "UInt32Property", 0, self.str_to_int(new_name[4:len(new_name)]),17936)
-                    self.js=self.DelByNameN(self.js, "UInt32Property", 0,17937)
-                elif a ==3:
-                    self.js=self.SaveByNameN(self.js, "UInt32Property", 0, self.str_to_int(new_name[0:4]),17935)
-                    self.js=self.SaveByNameN(self.js, "UInt32Property", 0, self.str_to_int(new_name[4:8]),17936)
-                    self.js=self.SaveByNameN(self.js, "UInt32Property", 0, self.str_to_int(new_name[8:len(new_name)]),17937)
-                    
-                print(new_name)
-                break
+                aaa=True
+                for i in new_name:
+                    if len(binascii.hexlify(i.encode()).decode()) > 2:
+                        aaa=False
+                
+                if aaa == True:
+                    self.js[1]["value"]=self.SaveByName(self.js[1]["value"],"FirstName",1,1,new_name,"01000000",self.SaveHeader["LenFirstName"],'{"type": "Int8Property", "name": name,"padding_static":static,"padding":self.int_to_hex(x_hex), "value": ord(nvar[c - 1])}')
+                    self.SaveHeader["firstname"] = new_name
+                    self.SaveHeader["LenFirstName"]=len(new_name)
+                    if len(new_name) < 5:
+                        a=1
+                    elif len(new_name) <9:
+                        a=2
+                    else:
+                        a=3
+                    if a == 1:
+                        self.js=self.SaveByNameN(self.js, "UInt32Property", 0, self.str_to_int(new_name),17935)
+                        self.js=self.DelByNameN(self.js, "UInt32Property", 0,17936)
+                        self.js=self.DelByNameN(self.js, "UInt32Property", 0,17937)
+                    elif a ==2:
+                        self.js=self.SaveByNameN(self.js, "UInt32Property", 0, self.str_to_int(new_name[0:4]),17935)
+                        self.js=self.SaveByNameN(self.js, "UInt32Property", 0, self.str_to_int(new_name[4:len(new_name)]),17936)
+                        self.js=self.DelByNameN(self.js, "UInt32Property", 0,17937)
+                    elif a ==3:
+                        self.js=self.SaveByNameN(self.js, "UInt32Property", 0, self.str_to_int(new_name[0:4]),17935)
+                        self.js=self.SaveByNameN(self.js, "UInt32Property", 0, self.str_to_int(new_name[4:8]),17936)
+                        self.js=self.SaveByNameN(self.js, "UInt32Property", 0, self.str_to_int(new_name[8:len(new_name)]),17937)
+                        
+                    print(new_name)
+                    break
             elif len(new_name)==0:
                 break
     def Characters(self):
