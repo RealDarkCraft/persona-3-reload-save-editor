@@ -5,7 +5,8 @@ def write_int8(value):
 
 def write_int16(value):
     return pack('<h', value)
-
+def write_uint16(value):
+    return pack('<H', value)
 def write_int32(value):
     return pack('<i', value)
 
