@@ -490,7 +490,7 @@ class Persona3Save:
     def Money(self):
         while True:
             try:
-                new_name=input("New FirstName (9999999 max | put nothing to cancel): ")
+                new_name=input("New Money number (9999999 max | put nothing to cancel): ")
                 new_name=int(new_name)
                 if new_name>=0 and new_name<=9999999:
                     self.js=self.SaveByNameN(self.js, "UInt32Property", 0, new_name,7257)
