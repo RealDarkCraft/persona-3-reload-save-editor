@@ -408,6 +408,7 @@ class Persona3Save:
                     self.js=self.SaveByNameN(self.js, "UInt32Property", 0, play,12832)
                     self.Data["playtime"] = play
                     print(play)
+                    break
             except:
                 try:
                     if len(new_name)==0:
