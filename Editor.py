@@ -1,5 +1,5 @@
 CREDITS = "https://github.com/afkaf/Python-GVAS-JSON-Converter"
-import json, binascii,time, os, tempfile, struct
+import json, binascii,time, os, tempfile, struct, sys
 from SavConverter import sav_to_json, read_sav, json_to_sav, load_json
 
 class Encryption:
@@ -68,12 +68,9 @@ class Persona3Save:
                     a=command.split(" ")
                     if len(a) == 2:
                         try:
-                            if a[1] == "lastname":
-                                int("a")
                             z=self.SaveHeader[a[1]]
-                            print("\n")
+                            print("")
                             print(z)
-                            print("\n")
                         except:
                             try:
                                 if type(self.Data[a[1]]) != dict:
@@ -333,11 +330,11 @@ class Persona3Save:
             print(f"\nChose the characters to edit (put nothing to exit Characters editing) :\n    1 : {self.SaveHeader['lastname']}")
 
             a = input().lower()
+            bbc=self.SaveHeader['lastname']
             if a == "1":
                 while True:
                     command = input(f"(type help to see comand) ({characters[0]} stats editing) :  ").lower()
                     if command == "edit current_pv":
-                        bbc=self.SaveHeader['lastname']
                         while True:
                             z=input(F"New {bbc} PV (Max PV is calculated by the game) (999 max | put nothing to cancel): ")
                             if z == "":
@@ -493,11 +490,23 @@ class Persona3Save:
                         break
                 except:
                     pass
-while True:
+if len(sys.argv) >1:
     try:
-        a=input("Persona3 Reload sav path : ").replace('"',"")
+        a=sys.argv[1].replace('"',"")
         a=OpenSave().Load(os.path.split(os.path.abspath(a))[0],0,os.path.split(os.path.abspath(a))[1],True)
     except FileNotFoundError:
-        print("Bad path\n")
+        raise FileNotFoundError("Bad path\n")
     except PermissionError:
-        print("Permission error or Bad path error\n")
+        raise FileNotFoundError("Permission error or Bad path error\n")
+    except Exception as e:
+        if "Failed to read HeaderProperty" in str(e):
+            raise Exception("Invalid file format (not GVAS)")
+else:
+    while True:
+        try:
+            a=input("Persona3 Reload sav path : ").replace('"',"")
+            a=OpenSave().Load(os.path.split(os.path.abspath(a))[0],0,os.path.split(os.path.abspath(a))[1],True)
+        except FileNotFoundError:
+            print("Bad path\n")
+        except PermissionError:
+            print("Permission error or Bad path error\n")
