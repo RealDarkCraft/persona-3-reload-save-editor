@@ -23,6 +23,10 @@ class SavReader:
         value = unpack('<h', self.file_array_buffer[self.offset:self.offset + 2])[0]
         self.offset += 2
         return value
+    def read_uint16(self):
+        value = unpack('<H', self.file_array_buffer[self.offset:self.offset + 2])[0]
+        self.offset += 2
+        return value
     
     def read_int32(self):
         value = unpack('<i', self.file_array_buffer[self.offset:self.offset + 4])[0]
@@ -109,6 +113,8 @@ class SavReader:
             return Int64Property(property_name, self)
         elif property_type == "UInt32Property":
             return UInt32Property(property_name, self)
+        elif property_type == "UInt16Property":
+            return UInt16Property(property_name, self)
         elif property_type == "FloatProperty":
             return FloatProperty(property_name, self)
         elif property_type == "EnumProperty":
