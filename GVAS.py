@@ -23,8 +23,8 @@ class Encryption:
 class OpenSave:
     def __init__(self):
         pass
-    def Load(self,i,mdd):
-        dec_data = Encryption().XORshift(i,"ae5zeitaix1joowooNgie3fahP5Ohph","dec")
+    def Load(self,i,mdd,e,make_bak):
+        dec_data = Encryption().XORshift(i+"\\"+e,"ae5zeitaix1joowooNgie3fahP5Ohph","dec")
         with open("decrypted.txt","wb") as f:
             f.write(dec_data)
         with tempfile.NamedTemporaryFile(mode='wb',suffix='.sav', delete=False) as temp_file:
@@ -37,29 +37,16 @@ class OpenSave:
             temp_file.write(json_data)
             temp_file_path = temp_file.name
             temp_file.flush
-        return Persona3Save(temp_file_path,mdd)
+        return Persona3Save(temp_file_path,mdd,i,e,make_bak)
 class Persona3Save:
-    def __init__(self,i,mdd):
+    def __init__(self,i,mdd,ww,qq,make_bak):
+        self.make_bak_file=make_bak
+        self.filenamestart=ww
+        self.filenameend=qq
         with open(i,"r") as f:
             self.js=json.load(f)
         os.remove(i)
         self.LoadData()
-        
-        #36950200
-        #print(self.debug_GetIdByValue(self.js,"UInt32Property",0,5221))
-        #print(self.LoadByNameN(self.js, "UInt32Property", 0,17935))#1065350217
-        #3259918602
-        #self.js=self.SaveByNameN(self.js, "UInt32Property", 0, 3259918602,5220)
-        """
-        #self.js=self.SaveByNameN(self.js, "UInt32Property", 0, 87,87443)
-        
-        # player actual pv = 13070
-        # player actual pc = 13071
-        #97203    45850
-        self.js=self.SaveByNameN(self.js, "UInt32Property", 0, 120,13071)
-        self.js=self.SaveByNameN(self.js, "UInt32Property", 0, 120,13246)
-        #print(self.debug_GetIdByValue(self.js,"UInt32Property",0,41))
-        """
         if mdd==0:
             while True:
                 command=input("(type help to see comand): ").lower()
@@ -143,7 +130,14 @@ class Persona3Save:
             temp_file.flush
         enc_data = Encryption().XORshift(temp_file_path,"ae5zeitaix1joowooNgie3fahP5Ohph","enc")
         os.remove(temp_file_path)
-        with open(f"{self.filename}.sav","wb") as f:
+        if self.make_bak_file == True:
+            if os.path.isdir(self.filenamestart+"\\backup") == False:
+                os.mkdir(self.filenamestart+"\\backup")
+            with open(f"{self.filenamestart}\\{self.filenameend}","rb") as fr:
+                back_data=fr.read()
+            with open(f"{self.filenamestart}\\backup\\{str(int(time.time()))+'_'+self.filenameend}","wb") as fb:
+                fb.write(back_data)            
+        with open(f"{self.filenamestart}\\{self.filenameend}","wb") as f:
             f.write(enc_data)
     def int_to_hex(self,int_value):
         return ''.join([(hex(int_value)[2:].zfill(8))[i:i+2] for i in range(6, -2, -2)])
@@ -499,5 +493,4 @@ class Persona3Save:
                         break
                 except:
                     pass
-a=OpenSave().Load("SaveData001.sav",0)
-#print(a.Data)
+a=OpenSave().Load(os.path.split(os.path.abspath("SaveData001.sav"))[0],0,os.path.split(os.path.abspath("SaveData001.sav"))[1],True)#input("Persona3 Reload sav path"),0,)
