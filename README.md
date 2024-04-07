@@ -1,5 +1,7 @@
 # Persona3 Reload | Save Editor (Steam)
-A tool to edit : Money, Firstname, Lastname...
+A tool to edit : Money, Firstname, Lastname, Firstname...
+
+(You can see all command by typing "help")
 
 Actually I test with only one save so idk if it's work for all save
 
