@@ -10,6 +10,7 @@ def assign_prototype(raw_property):
         "Int64Property": Int64Property,
         "Int8Property":Int8Property,
         "UInt32Property": UInt32Property,
+        "UInt16Property": UInt16Property,
         "StrProperty": StrProperty,
         "NameProperty": NameProperty,
         "ByteProperty": ByteProperty,
@@ -201,7 +202,27 @@ class UInt32Property:
 
     def to_bytes(self):
         return write_string(self.name) + write_string(self.type) + write_bytes(self.padding_static) + write_bytes(self.padding) + write_bytes("00") + write_uint32(self.value)
+class UInt16Property:
+    padding = bytes([0x02] + [0x00] * 8)
+    type = "UInt16Property"
 
+    def __init__(self, name, sav_reader):
+        self.type = "UInt16Property"
+        self.name = name
+        self.padding_static=sav_reader.read_bytes(len(UInt16Property.padding)//2)
+        self.padding=sav_reader.read_bytes(len(UInt16Property.padding)//2)
+        sav_reader.read_bytes(len(UInt16Property.padding)%2)        
+        
+        self.value = sav_reader.read_uint16()
+
+    @classmethod
+    def from_json(cls, json_dict):
+        instance = cls.__new__(cls) # Create a new instance without calling the constructor
+        instance.__dict__.update(json_dict) # Update the instance attributes with the JSON dictionary
+        return instance
+
+    def to_bytes(self):
+        return write_string(self.name) + write_string(self.type) + write_bytes(self.padding_static) + write_bytes(self.padding) + write_bytes("00") + write_uint16(self.value)
 
 class StrProperty:
     padding = bytes([0x00] * 8)
