@@ -17,7 +17,7 @@ After put the path of your sav, after you wan get/modify the value and save the 
 program backup the file to : {original-file-path}/backup/{timestamp}_{filename}.sav
 
 
-I could possibly add other functions (Persona, object, character location...).
+I could possibly add other functions (Persona, items, character location...).
 
 But I can't guarantee anything, as the game saves data (GVAS) in a way that's hard to understand
 
