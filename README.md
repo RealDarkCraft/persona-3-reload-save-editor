@@ -4,7 +4,7 @@ Could work for other version like microsoft-store or PS4 (but i don't make test 
 ( For PS4/PS5 (and maybe for xbox/microsoft-store ?) save you need to decrypt the save yourself [you can use this method : https://www.youtube.com/watch?v=QA1lLxn_klA] (this method works for PS4 but I don't know if it work for PS5) )
 
 A tool to edit : Money, Firstname, Lastname, Characters stats (actually
-only for you'r character, Yukari and Junpei), playtime and (x_pos,y_pos,z_pos 
+only for you'r character, Yukari and Junpei), playtime, social-rank and (x_pos,y_pos,z_pos 
 (z_pos function ca be wrong) : [DANGEROUS MODIFICATION] (because if you write bad data in you'r character can be stuck))...
 
 (You can see all command by typing "help")
