@@ -1,5 +1,7 @@
 # Persona3 Reload | Save Editor (Steam)
-A tool to edit : Money, Firstname, Lastname, Firstname...
+A tool to edit : Money, Firstname, Lastname, Characters stats (actually
+only for you'r character, Yukari and Junpei), playtime and (x_pos,y_pos,z_pos 
+(z_pos function ca be wrong) : [DANGEROUS MODIFICATION] (because if you write bad data in you'r character can be stuck))...
 
 (You can see all command by typing "help")
 
