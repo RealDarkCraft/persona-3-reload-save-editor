@@ -131,9 +131,9 @@ class Persona3Save:
         self.Data={}
         self.Data["money"]=self.LoadByNameN(self.js, "UInt32Property", 0,7257)
         self.Data["playtime"] = self.LoadByNameN(self.js, "UInt32Property", 0,12832)
-        self.Data["characters"]={}
-        self.Data["socialrank"]={}
-        self.Data["dangerous"]={"player_x":self.LoadByNameN(self.js, "UInt32Property", 0,5219),"player_y":self.LoadByNameN(self.js, "UInt32Property", 0,5220),"player_z":self.LoadByNameN(self.js, "UInt32Property", 0,5221),"player_direction":self.LoadByNameN(self.js, "UInt32Property", 0,5218)}
+        self.Data["characters"]={self.SaveHeader["firstname"].lower():{"current_pv":13070,"current_pc":13071,"level":13074},"yukari":{"current_pv":13246,"current_pc":13247,"level":13263},"junpei":{"current_pv":13422,"current_pc":13423,"level":13439}}
+        self.Data["dangerous"]={"player_x":self.LoadByNameN(self.js, "UInt32Property", 0,5219),"player_y":self.LoadByNameN(self.js, "UInt32Property", 0,5220),"player_direction":self.LoadByNameN(self.js, "UInt32Property", 0,5218)}#"player_z":self.LoadByNameN(self.js, "UInt32Property", 0,5221)}
+        self.Data["socialrank"] = {"academics":5352,"charm":5354,"courage":5356}
     def SaveChange(self):
         with tempfile.NamedTemporaryFile(mode='w',suffix='.json', delete=False) as temp_file:
             json.dump(self.js, temp_file, indent=2)
@@ -398,7 +398,6 @@ class Persona3Save:
             elif len(new_name)==0:
                 break
     def Characters(self):
-        self.Data["characters"]={self.SaveHeader["firstname"].lower():{"current_pv":13070,"current_pc":13071,"level":13074},"yukari":{"current_pv":13246,"current_pc":13247,"level":13263},"junpei":{"current_pv":13422,"current_pc":13423,"level":13439}}
         characters = [self.SaveHeader["firstname"].lower(),"yukari","junpei"]
         
         while True:
@@ -478,7 +477,6 @@ class Persona3Save:
     def Relationship(self):
         pass
     def Socialrank(self):
-        self.Data["socialrank"] = {"academics":5352,"charm":5354,"courage":5356}
         while True:
             command = input(f"(type help to see comand) (social-rank editing) :  ")
             if command == "edit charm":
@@ -590,7 +588,7 @@ class Persona3Save:
                                 break
                         except:
                             pass
-            elif command == "edit player_z":
+            elif command == None:#"edit player_z":
                 while True:
                     z=input(F"New player_z (4294967295 max | put nothing to cancel | UNCONFIRMED VALUE ID !): ")
                     if z == "":
