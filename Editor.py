@@ -24,22 +24,35 @@ class OpenSave:
     def __init__(self):
         pass
     def Load(self,i,mdd,e,make_bak):
-        dec_data = Encryption().XORshift(i+"\\"+e,"ae5zeitaix1joowooNgie3fahP5Ohph","dec")
-        with open("decrypted.txt","wb") as f:
-            f.write(dec_data)
-        with tempfile.NamedTemporaryFile(mode='wb',suffix='.sav', delete=False) as temp_file:
-            temp_file.write(dec_data)
-            temp_file_path = temp_file.name
-            temp_file.flush
-        json_data= sav_to_json(read_sav(temp_file_path), string = True)
-        os.remove(temp_file_path)
+        try:
+            dec_data = Encryption().XORshift(i+"\\"+e,"ae5zeitaix1joowooNgie3fahP5Ohph","dec")            
+            with tempfile.NamedTemporaryFile(mode='wb',suffix='.sav', delete=False) as temp_file:
+                temp_file.write(dec_data)
+                temp_file_path = temp_file.name
+                temp_file.flush
+            json_data= sav_to_json(read_sav(temp_file_path), string = True)
+            os.remove(temp_file_path)
+            comp=True
+        except:
+            os.remove(temp_file_path)
+            dec_data=open(i+"\\"+e,"rb").read()
+            with tempfile.NamedTemporaryFile(mode='wb',suffix='.sav', delete=False) as temp_file:
+                temp_file.write(dec_data)
+                temp_file_path = temp_file.name
+                temp_file.flush
+            json_data= sav_to_json(read_sav(temp_file_path), string = True)
+            os.remove(temp_file_path)
+            comp=False
+            
         with tempfile.NamedTemporaryFile(mode='w',suffix='.json', delete=False) as temp_file:
             temp_file.write(json_data)
             temp_file_path = temp_file.name
             temp_file.flush
-        return Persona3Save(temp_file_path,mdd,i,e,make_bak)
+        return Persona3Save(temp_file_path,mdd,i,e,make_bak,comp)
 class Persona3Save:
-    def __init__(self,i,mdd,ww,qq,make_bak):
+    def __init__(self,i,mdd,ww,qq,make_bak,comp):
+        self.padding={"UInt32Property":"04000000","Int8Property":"01000000","UInt16Property":"02000000"}
+        self.encrypted=comp
         self.make_bak_file=make_bak
         self.filenamestart=ww
         self.filenameend=qq
@@ -47,6 +60,11 @@ class Persona3Save:
             self.js=json.load(f)
         os.remove(i)
         self.LoadData()
+        #self.js=self.SaveByNameN(self.js, "UInt32Property", 0, 8,5352)# 16386
+        #print(self.debug_GetIdByValue(self.js,"UInt32Property",0,16386))
+        #print(self.debug_GetIdByValue(self.js,"UInt32Property",0,393312))
+        #print(self.debug_GetIdByValue(self.js,"UInt32Property",0,4))
+        #print(self.LoadByNameN(self.js, "UInt32Property", 0,13423))
         if mdd==0:
             while True:
                 command=input("(type help to see comand): ").lower()
@@ -62,6 +80,8 @@ class Persona3Save:
                     self.FirstName()
                 elif command == "edit characters" or command == "edit character":
                     self.Characters()
+                elif command == "edit socialrank" or command == "edit socialranks":
+                    self.Socialrank()
                 elif command == "edit dangerous":
                     self.Dangerous()
                 elif command == "get" or command[0:4] == "get ":
@@ -112,6 +132,7 @@ class Persona3Save:
         self.Data["money"]=self.LoadByNameN(self.js, "UInt32Property", 0,7257)
         self.Data["playtime"] = self.LoadByNameN(self.js, "UInt32Property", 0,12832)
         self.Data["characters"]={}
+        self.Data["socialrank"]={}
         self.Data["dangerous"]={"player_x":self.LoadByNameN(self.js, "UInt32Property", 0,5219),"player_y":self.LoadByNameN(self.js, "UInt32Property", 0,5220),"player_z":self.LoadByNameN(self.js, "UInt32Property", 0,5221),"player_direction":self.LoadByNameN(self.js, "UInt32Property", 0,5218)}
     def SaveChange(self):
         with tempfile.NamedTemporaryFile(mode='w',suffix='.json', delete=False) as temp_file:
@@ -121,12 +142,15 @@ class Persona3Save:
         binary_save = json_to_sav(load_json(temp_file_path))
         
         os.remove(temp_file_path)
-        with tempfile.NamedTemporaryFile(mode='wb',suffix='.sav', delete=False) as temp_file:
-            temp_file.write(binary_save)
-            temp_file_path = temp_file.name
-            temp_file.flush
-        enc_data = Encryption().XORshift(temp_file_path,"ae5zeitaix1joowooNgie3fahP5Ohph","enc")
-        os.remove(temp_file_path)
+        if self.encrypted == True:
+            with tempfile.NamedTemporaryFile(mode='wb',suffix='.sav', delete=False) as temp_file:
+                temp_file.write(binary_save)
+                temp_file_path = temp_file.name
+                temp_file.flush
+            enc_data = Encryption().XORshift(temp_file_path,"ae5zeitaix1joowooNgie3fahP5Ohph","enc")
+            os.remove(temp_file_path)
+        else:
+            enc_data=binary_save
         if self.make_bak_file == True:
             if os.path.isdir(self.filenamestart+"\\backup") == False:
                 os.mkdir(self.filenamestart+"\\backup")
@@ -144,7 +168,7 @@ class Persona3Save:
             for i in js[:]:
                 if i["type"]== name:
                     if i["value"]==value:
-                        d.append(int.from_bytes(binascii.unhexlify(i["padding"]),byteorder="little"))
+                        d.append((int.from_bytes(binascii.unhexlify(i["padding"]),byteorder="little")))
         return d
     def SaveByNameN(self,js, name, header, nvar,n,after=None):
         xx=False
@@ -183,35 +207,39 @@ class Persona3Save:
                     if int.from_bytes(binascii.unhexlify(str(i["padding"])),byteorder="little") == n:
                         js.remove(i)
             return js
-    def SaveByName(self, js, name, mode, header, nvar, static, lenn=None, dummy=None):
+    def SaveByName(self, js, name, mode, header, nvar, typee, lenn=None, dummy=None):
         c = 0
         d = 0
         r = False
         x_hex=-1
         for i in js[:]:
-            d += 1
-            if header == 1:
-                try:
-                    if mode == 1:
-                        if i["name"] == name:
-                            if c < len(nvar) and not r:
-                                x_hex+=1
-                                c += 1
-                                i["value"] = ord(nvar[c - 1])
-                                i["padding"]=self.int_to_hex(x_hex)
-                            else:
-                                r = True
-                                js.remove(i)
-                        elif c != 0 and c < len(nvar):
-                            c+=1
-                            x_hex+=1
-                            
-                            js.insert(d-1, eval(dummy))
-                    elif mode == 0:
-                        if i["name"] == name:
-                            i["value"] = nvar
-                except:
-                    pass
+            try:
+                if i["name"] == name:
+                    js.remove(i)
+            except:
+                pass
+        x_padding=-1
+        x_value=-1
+        if mode == 0:
+            nbr=1
+        elif mode == 1:
+            nbr=len(nvar)
+        for i in range(nbr):
+            try:
+                if mode == 1:
+                    x_value+=1
+                    number=hex(ord(nvar[x_value])).replace("0x","")
+                    if len(number)%2==1:
+                        number=f"0{number}"
+                    number = self.split_string(number,2)
+                    for ise in number:
+                        x_padding+=1
+                        js.insert(len(js)-1, {"type":typee,"name":name,"padding_static":self.padding[typee],"padding":self.int_to_hex(x_padding),"value":int.from_bytes(binascii.unhexlify(ise), byteorder="big", signed=True)})
+                
+                elif mode == 0:
+                    js.insert(len(js)-1, {"type":typee,"name":name,"padding_static":self.padding[typee],"padding":self.int_to_hex(0),"value":nvar})
+            except:
+                pass
         return js
     def LoadByNameN(self,js, name, header,n):
         if header == 0:
@@ -247,7 +275,7 @@ class Persona3Save:
             tmp+=i[1]
         if len(tmp)>0:
             if mode==1:
-                return binascii.unhexlify(tmp).decode("utf-8")
+                return binascii.unhexlify(tmp).decode("utf-8", errors="ignore")
             return binascii.unhexlify(tmp)
         return None
     def str_to_int(self,i):
@@ -255,7 +283,25 @@ class Persona3Save:
         for a in i:
             strr+=hex(ord(a))[2:].zfill(2)
         return int.from_bytes(binascii.unhexlify(strr),byteorder="little")    
-    
+    def split_string(self,string,nbr,val=False):
+        if val == True:
+            string=binascii.hexlify(string.encode()).decode()
+        new_lst=[]
+        iq=0
+        strr=""
+        for i in string:
+            iq+=1
+            strr+=i
+            if iq == nbr:
+                iq=0
+                new_lst.append(strr)
+                strr=""
+        if strr != "":
+            new_lst.append(strr)
+        return new_lst
+                
+            
+            
     """ Method """
     
     def LastName(self):
@@ -266,11 +312,22 @@ class Persona3Save:
                 for i in new_name:
                     if len(binascii.hexlify(i.encode()).decode()) > 2:
                         aaa=False
-                
                 if aaa == True:
-                    self.js[1]["value"]=self.SaveByName(self.js[1]["value"],"LastName",1,1,new_name,"01000000",self.SaveHeader["LenLastName"],'{"type": "Int8Property", "name": name,"padding_static":static,"padding":self.int_to_hex(x_hex), "value": ord(nvar[c - 1])}')
+                    self.js[1]["value"]=self.SaveByName(self.js[1]["value"],"LastName",1,1,new_name,"Int8Property",self.SaveHeader["LenLastName"],'{"type": "Int8Property", "name": name,"padding_static":static,"padding":self.int_to_hex(x_hex), "value": ord(nvar[c - 1])}')
                     self.SaveHeader["lastname"] = new_name
                     self.SaveHeader["LenLastName"]=len(new_name)
+                    new_name = self.split_string(new_name,8,True)
+                    counter=0
+                    for i in [0,0,0,0,0,0,0,0]:
+                        self.js=self.DelByNameN(self.js, "UInt32Property", 0,17950+counter)
+                    counter=0
+                    for i in new_name:
+                        counter+=1
+                        self.js=self.SaveByNameN(self.js, "UInt32Property", 0, int.from_bytes(binascii.unhexlify(i),byteorder="little"),17950+counter)
+                    
+
+                    
+                    """
                     if len(new_name) < 5:
                         a=1
                     elif len(new_name) <9:
@@ -289,7 +346,7 @@ class Persona3Save:
                         self.js=self.SaveByNameN(self.js, "UInt32Property", 0, self.str_to_int(new_name[0:4]),17951)
                         self.js=self.SaveByNameN(self.js, "UInt32Property", 0, self.str_to_int(new_name[4:8]),17952)
                         self.js=self.SaveByNameN(self.js, "UInt32Property", 0, self.str_to_int(new_name[8:len(new_name)]),17953)
-                        
+                    """
                         
                     print(new_name)
                     break
@@ -303,11 +360,20 @@ class Persona3Save:
                 for i in new_name:
                     if len(binascii.hexlify(i.encode()).decode()) > 2:
                         aaa=False
-                
                 if aaa == True:
-                    self.js[1]["value"]=self.SaveByName(self.js[1]["value"],"FirstName",1,1,new_name,"01000000",self.SaveHeader["LenFirstName"],'{"type": "Int8Property", "name": name,"padding_static":static,"padding":self.int_to_hex(x_hex), "value": ord(nvar[c - 1])}')
+                    self.js[1]["value"]=self.SaveByName(self.js[1]["value"],"FirstName",1,1,new_name,"Int8Property",self.SaveHeader["LenFirstName"],'{"type": "Int8Property", "name": name,"padding_static":static,"padding":self.int_to_hex(x_hex), "value": ord(nvar[c - 1])}')
                     self.SaveHeader["firstname"] = new_name
                     self.SaveHeader["LenFirstName"]=len(new_name)
+                    new_name = self.split_string(new_name,8,True)
+                    counter=0
+                    for i in [0,0,0,0,0,0,0,0]:
+                        self.js=self.DelByNameN(self.js, "UInt32Property", 0,17934+counter)
+                    counter=0
+                    for i in new_name:
+                        counter+=1
+                        self.js=self.SaveByNameN(self.js, "UInt32Property", 0, int.from_bytes(binascii.unhexlify(i),byteorder="little"),17934+counter)
+                    
+                    """
                     if len(new_name) < 5:
                         a=1
                     elif len(new_name) <9:
@@ -326,64 +392,79 @@ class Persona3Save:
                         self.js=self.SaveByNameN(self.js, "UInt32Property", 0, self.str_to_int(new_name[0:4]),17935)
                         self.js=self.SaveByNameN(self.js, "UInt32Property", 0, self.str_to_int(new_name[4:8]),17936)
                         self.js=self.SaveByNameN(self.js, "UInt32Property", 0, self.str_to_int(new_name[8:len(new_name)]),17937)
-                        
+                    """
                     print(new_name)
                     break
             elif len(new_name)==0:
                 break
     def Characters(self):
-        self.Data["characters"]={self.SaveHeader["lastname"].lower():{"current_pv":13070,"current_pc":13071}}
-        characters = [self.SaveHeader["lastname"].lower()]#,"yukari","junpei"]
-        
-        
+        self.Data["characters"]={self.SaveHeader["firstname"].lower():{"current_pv":13070,"current_pc":13071,"level":13074},"yukari":{"current_pv":13246,"current_pc":13247,"level":13263},"junpei":{"current_pv":13422,"current_pc":13423,"level":13439}}
+        characters = [self.SaveHeader["firstname"].lower(),"yukari","junpei"]
         
         while True:
-            #print(f"\nChose the characters to edit (put nothing to exit Characters editing) :\n    {characters[0][0].upper()+characters[0][1:len(characters[0])]}\n    {characters[0]}\n    {characters[0]}")
-            print(f"\nChose the characters to edit (put nothing to exit Characters editing) :\n    1 : {self.SaveHeader['lastname']}")
-
+            print(f"\nChose the characters to edit (put nothing to exit 'Characters' editing) :\n    1 : {self.SaveHeader['firstname']}\n    2 : {characters[1][0:1].upper()+characters[1][1:len(characters[1])]}\n    3 : {characters[2][0:1].upper()+characters[2][1:len(characters[2])]}")
             a = input().lower()
-            bbc=self.SaveHeader['lastname']
-            if a == "1":
+            if a in ["1","2","3"]:
+                if a == "1":
+                    bbc=self.SaveHeader['firstname']
+                else:
+                    bbc=characters[int(a)-1][0:1].upper()+characters[int(a)-1][1:len(characters[int(a)-1])]
                 while True:
-                    command = input(f"(type help to see comand) ({characters[0]} stats editing) :  ").lower()
+                    command = input(f"(type help to see comand) ('{bbc}' stats editing) :  ").lower()
                     if command == "edit current_pv":
                         while True:
-                            z=input(F"New {bbc} PV (Max PV is calculated by the game) (999 max | put nothing to cancel): ")
+                            z=input(F"New {bbc} PV (to increase Max PV, increase the Level) (999 max | put nothing to cancel): ")
                             if z == "":
                                 break
                             else:
                                 try:
                                     z=int(z)
                                     if z>0 and z < 1000:
-                                        self.js=self.SaveByNameN(self.js, "UInt32Property", 0, z,13070)
+                                        self.js=self.SaveByNameN(self.js, "UInt32Property", 0, z,self.Data["characters"][characters[int(a)-1]]["current_pv"])
                                         break
                                 except:
                                     pass
                     elif command == "edit current_pc":
                         while True:
-                            z=input(F"New {bbc} PC (Max PC is calculated by the game) (999 max | put nothing to cancel): ")
+                            z=input(F"New {bbc} PC (to increase Max PC, increase the Level) (999 max | put nothing to cancel): ")
                             if z == "":
                                 break
                             else:
                                 try:
                                     z=int(z)
                                     if z>0 and z < 1000:
-                                        self.js=self.SaveByNameN(self.js, "UInt32Property", 0, z,13071)
+                                        self.js=self.SaveByNameN(self.js, "UInt32Property", 0, z,self.Data["characters"][characters[int(a)-1]]["current_pc"])
                                         break
                                 except:
                                     pass
-                        
+                    elif command == "edit level":
+                        while True:
+                            z=input(F"New {bbc} Level (99 max | put nothing to cancel): ")
+                            if z == "":
+                                break
+                            else:
+                                try:
+                                    z=int(z)
+                                    if z>0 and z < 100:
+                                        if a == "1":
+                                            self.js[1]["value"]=self.SaveByName(self.js[1]["value"],"PlayerLevel",0,1,z,"UInt32Property")
+                                        self.js=self.SaveByNameN(self.js, "UInt32Property", 0, z,self.Data["characters"][characters[int(a)-1]]["level"])
+                                        break
+                                except:
+                                    pass
+                    
+                    
                     elif command=="print":
-                        for i in self.Data["characters"][characters[0]].keys():
+                        for i in self.Data["characters"][characters[int(a)-1]].keys():
                             print(i)
                     elif command == "get" or command[0:4] == "get ":
-                        a=command.split(" ")
-                        if len(a) == 2:
+                        av=command.split(" ")
+                        if len(av) == 2:
                             try:
                                 print("")
-                                print(self.LoadByNameN(self.js, "UInt32Property", 0,self.Data["characters"][characters[0]][a[1]]))
-                            except:
-                                pass
+                                print(self.LoadByNameN(self.js, "UInt32Property", 0,self.Data["characters"][characters[int(a)-1]][av[1]]))
+                            except Exception as e:
+                                print(e)
                     elif command == "back":
                         break
                     elif command == "help":
@@ -397,21 +478,86 @@ class Persona3Save:
     def Relationship(self):
         pass
     def Socialrank(self):
-        pass
-    def Playtime(self):
+        self.Data["socialrank"] = {"academics":5352,"charm":5354,"courage":5356}
         while True:
+            command = input(f"(type help to see comand) (social-rank editing) :  ")
+            if command == "edit charm":
+                while True:
+                    z=input(F"New charm (100 max | put nothing to cancel): ")
+                    if z == "":
+                        break
+                    else:
+                        try:
+                            z=int(z)
+                            if z>0 and z < 101:
+                                self.js=self.SaveByNameN(self.js, "UInt32Property", 0, z,self.Data["socialrank"]["charm"])
+                                break
+                        except:
+                            pass
+            elif command == "edit academics":
+                while True:
+                    z=input(F"New academics (230 max | put nothing to cancel): ")
+                    if z == "":
+                        break
+                    else:
+                        try:
+                            z=int(z)
+                            if z>0 and z < 231:
+                                self.js=self.SaveByNameN(self.js, "UInt32Property", 0, z,self.Data["socialrank"]["academics"])
+                                break
+                        except:
+                            pass
+            elif command == "edit courage":
+                while True:
+                    z=input(F"New courage (80 max | put nothing to cancel): ")
+                    if z == "":
+                        break
+                    else:
+                        try:
+                            z=int(z)
+                            if z>0 and z < 81:
+                                self.js=self.SaveByNameN(self.js, "UInt32Property", 0, z,self.Data["socialrank"]["courage"])
+                                break
+                        except:
+                            pass
+            
+            
+            elif command=="print":
+                for i in self.Data["socialrank"].keys():
+                    print(i)
+            elif command == "get" or command[0:4] == "get ":
+                av=command.split(" ")
+                if len(av) == 2:
+                    try:
+                        print("")
+                        print(self.LoadByNameN(self.js, "UInt32Property", 0,self.Data["socialrank"][av[1]]))
+                    except Exception as e:
+                        print(e)
+            elif command == "back":
+                break
+            elif command == "help":
+                print("")
+                print(f"back : to exit social-rank editing\nprint : show editable value name\nedit 'value_name' : edit the value of 'value_name'\nget 'value_name' : get the value of 'value_name'")
+
+
+        
+        
+        
+        
+    def Playtime(self):
+        while True:#8205188
             try:
                 play = input("New Playtime (max 107998200 | put nothing to cancel): ")
                 play=int(play)
                 if play >= 0 and play <= 107998200:
-                    self.js[1]["value"]=self.SaveByName(self.js[1]["value"],"PlayTime",1,1,play,"04000000")
+                    self.js[1]["value"]=self.SaveByName(self.js[1]["value"],"PlayTime",0,1,play,"UInt32Property")
                     self.js=self.SaveByNameN(self.js, "UInt32Property", 0, play,12832)
                     self.Data["playtime"] = play
                     print(play)
                     break
             except:
                 try:
-                    if len(new_name)==0:
+                    if len(play)==0:
                         break
                 except:
                     pass
@@ -490,7 +636,7 @@ class Persona3Save:
     def Money(self):
         while True:
             try:
-                new_name=input("New Money number (9999999 max | put nothing to cancel): ")
+                new_name=input("New FirstName (9999999 max | put nothing to cancel): ")
                 new_name=int(new_name)
                 if new_name>=0 and new_name<=9999999:
                     self.js=self.SaveByNameN(self.js, "UInt32Property", 0, new_name,7257)
@@ -513,13 +659,17 @@ if len(sys.argv) >1:
         raise FileNotFoundError("Permission error or Bad path error\n")
     except Exception as e:
         if "Failed to read HeaderProperty" in str(e):
-            raise Exception("Invalid file format (not GVAS)")
+            raise Exception("Invalid file format (not persona 3 reload GVAS)")
 else:
     while True:
         try:
             a=input("Persona3 Reload sav path : ").replace('"',"")
+            #a=r"C:\Users\Célestin\AppData\Roaming\Sega\P3R\Steam\76561198877134182\SaveData002.sav"
             a=OpenSave().Load(os.path.split(os.path.abspath(a))[0],0,os.path.split(os.path.abspath(a))[1],True)
         except FileNotFoundError:
             print("Bad path\n")
         except PermissionError:
             print("Permission error or Bad path error\n")
+        except Exception as e:
+            if "Failed to read HeaderProperty" in str(e):
+                raise Exception("Invalid file format (not persona 3 reload GVAS)")
