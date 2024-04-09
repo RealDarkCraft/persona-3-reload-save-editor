@@ -11,6 +11,8 @@ only for you'r character, Yukari and Junpei), playtime, social-rank and (x_pos,y
 
 Actually I test with only one save so idk if it's work for all save
 
+With a save editor, it can be easy to destroy/softlock your save, so be careful (each time you save with the save editor, it creates a backup, so you can try to use these backups in case of problems).
+
 Launch Editor.py (SavConverter folder need to be in the same emplacement that Editor.py)
 After put the path of your sav, after you wan get/modify the value and save the file
 (if you want to recover your file by default when saving the
