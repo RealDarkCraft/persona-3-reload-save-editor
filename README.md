@@ -29,3 +29,7 @@ as the game uses values as UInt32 for saving).
 
 Credits :
 https://github.com/afkaf/Python-GVAS-JSON-Converter
+
+Any external modification of a save file may be dangerous/damage to the save file, by using this tool you confirm that you are aware of this. therefore, no responsibility will be taken in case of lost saves.
+
+(but actually each time you save the save-file with this tool, he make an backup)
