@@ -63,8 +63,20 @@ class Persona3Save:
         #self.js=self.SaveByNameN(self.js, "UInt32Property", 0, 8,5352)# 16386
         #print(self.debug_GetIdByValue(self.js,"UInt32Property",0,16386))
         #print(self.debug_GetIdByValue(self.js,"UInt32Property",0,393312))
-        #print(self.debug_GetIdByValue(self.js,"UInt32Property",0,4))
-        #print(self.LoadByNameN(self.js, "UInt32Property", 0,13423))
+        
+        #print(self.debug_GetIdByValue(self.js,"UInt32Property",0,23))
+        
+        
+        #print(self.LoadByNameN(self.js, "UInt32Property", 0,99358))
+        
+        
+        #Start 257 -> 265
+        #self.js=self.SaveByNameN(self.js, "UInt32Property", 0, 265,1929)
+        
+        
+        
+        #self.js=self.SaveByNameN(self.js, "UInt32Property", 0, 29,131125)
+        #print(self.LoadByNameN(self.js, "UInt32Property", 0,1928))
         if mdd==0:
             while True:
                 command=input("(type help to see comand): ").lower()
@@ -74,6 +86,8 @@ class Persona3Save:
                     self.LastName()
                 elif command == "edit money":
                     self.Money()
+                elif command == "edit date":
+                    self.Date()
                 elif command == "edit playtime":
                     self.Playtime()
                 elif command == "edit firstname":
@@ -109,7 +123,7 @@ class Persona3Save:
                     for i in self.Data.keys():
                         print(i)
                 elif command == "json":
-                    with open("json.txt","w") as f:
+                    with open("n_json.txt","w") as f:
                         json.dump(self.js, f, indent=4)
                 elif command == "save":
                     self.SaveChange()
@@ -131,9 +145,10 @@ class Persona3Save:
         self.Data={}
         self.Data["money"]=self.LoadByNameN(self.js, "UInt32Property", 0,7257)
         self.Data["playtime"] = self.LoadByNameN(self.js, "UInt32Property", 0,12832)
-        self.Data["characters"]={self.SaveHeader["firstname"].lower():{"current_pv":13070,"current_pc":13071,"level":13074},"yukari":{"current_pv":13246,"current_pc":13247,"level":13263},"junpei":{"current_pv":13422,"current_pc":13423,"level":13439}}
+        self.Data["characters"]={self.SaveHeader["firstname"].lower():{"current_pv":13070,"current_pc":13071,"level":13074,"exp":13075},"yukari":{"current_pv":13246,"current_pc":13247,"level":13263,"exp":13264},"junpei":{"current_pv":13422,"current_pc":13423,"level":13439,"exp":13440}}
         self.Data["dangerous"]={"player_x":self.LoadByNameN(self.js, "UInt32Property", 0,5219),"player_y":self.LoadByNameN(self.js, "UInt32Property", 0,5220),"player_direction":self.LoadByNameN(self.js, "UInt32Property", 0,5218)}#"player_z":self.LoadByNameN(self.js, "UInt32Property", 0,5221)}
         self.Data["socialrank"] = {"academics":5352,"charm":5354,"courage":5356}
+        self.Data["date"]={"time":1929,"day":1928,"dayskip":1930}
     def SaveChange(self):
         with tempfile.NamedTemporaryFile(mode='w',suffix='.json', delete=False) as temp_file:
             json.dump(self.js, temp_file, indent=2)
@@ -451,6 +466,19 @@ class Persona3Save:
                                         break
                                 except:
                                     pass
+                    elif command == "edit exp":
+                        while True:
+                            z=input(F"New {bbc} Exp (4294967295 max | put nothing to cancel): ")
+                            if z == "":
+                                break
+                            else:
+                                try:
+                                    z=int(z)
+                                    if z>0 and z < 4294967296:
+                                        self.js=self.SaveByNameN(self.js, "UInt32Property", 0, z,self.Data["characters"][characters[int(a)-1]]["exp"])
+                                        break
+                                except:
+                                    pass
                     
                     
                     elif command=="print":
@@ -463,7 +491,7 @@ class Persona3Save:
                                 print("")
                                 print(self.LoadByNameN(self.js, "UInt32Property", 0,self.Data["characters"][characters[int(a)-1]][av[1]]))
                             except Exception as e:
-                                print(e)
+                                pass
                     elif command == "back":
                         break
                     elif command == "help":
@@ -530,7 +558,7 @@ class Persona3Save:
                         print("")
                         print(self.LoadByNameN(self.js, "UInt32Property", 0,self.Data["socialrank"][av[1]]))
                     except Exception as e:
-                        print(e)
+                        pass
             elif command == "back":
                 break
             elif command == "help":
@@ -631,6 +659,113 @@ class Persona3Save:
                 print("")
                 print(f"back : to exit |dangerous editing\nprint : show editable value name\nedit 'value_name' : edit the value of 'value_name'\nget 'value_name' : get the value of 'value_name'")
             self.Data["dangerous"]={"player_x":self.LoadByNameN(self.js, "UInt32Property", 0,5219),"player_y":self.LoadByNameN(self.js, "UInt32Property", 0,5220),"player_z":self.LoadByNameN(self.js, "UInt32Property", 0,5221),"player_direction":self.LoadByNameN(self.js, "UInt32Property", 0,5218)}
+    def Date(self):
+        timedata= [["Very early morning",257],["Early morning",258],["Morning",259],["Lunch break",260],["Afternoon",261], ["After school",262],["Evening",263],["Dark Hour",264],["Late evening",265]]
+        daydata=[[30,31,30,31,31,30,31,30,31,31,28,31],{2009:["April","May","Juin","July","August","September","October","November","December"],2010:["January","Febuary","March"]}]
+        while True:
+            command = input(f"(type help to see comand) (date editing) :  ")
+            if command == "edit day":
+                while True:
+                    z=input(F"Choose Year (2009-2010) (put nothing to cancel): ")
+                    if z == "":
+                        break
+                    else:
+                        try:
+                            z=int(z)
+                            if z == 2009 or z == 2010:
+                                while True:
+                                    print("Choose Month (put nothing to cancel) :")
+                                    counter=0
+                                    for az in daydata[1][z]:
+                                        counter+=1
+                                        print(f"    {counter} : {az}")
+                                    z2=input()                    
+                                    if z2 == "":
+                                        break
+                                    else:
+                                        try:
+                                            z2=int(z2)
+                                            if (z == 2009 and (z2>0 and z2<10)) or (z == 2010 and (z2>0 and z2<4)):
+                                                z2-=1
+                                                if z == 2010:
+                                                    z2+=9
+                                                while True:
+                                                    offset=0                                                        
+                                                    if z2 > 0:
+                                                        for iu in range(z2):
+                                                            offset+=daydata[0][iu]
+                                                    item = input(f"Choose Day ({daydata[0][z2]} Max) (put nothing to cancel) :")
+                                                    if item == "":
+                                                        break
+                                                    else:
+                                                        try:
+                                                            item = int(item)
+                                                            if (item > 0 and item < daydata[0][z2]):
+                                                                item=(offset+item)-1
+                                                                self.js=self.SaveByNameN(self.js, "UInt32Property", 0, item,1928)
+                                                                self.js=self.SaveByNameN(self.js, "UInt32Property", 0, item,1930)
+                                                                break
+                                                        except:
+                                                            pass
+                                                            
+                                                            
+                                                break
+                                        except:
+                                            pass
+                                break
+                        except:
+                            pass
+            elif command == None:#"edit day-skip":
+                while True:
+                    print(f"Chosse new hour (put nothing to cancel) (bad modification could break/soft-lock the game but you may fix it (not sure) by re-editing the save)\n    1 : {timedata[0][0]}\n    2 : {timedata[1][0]}\n    3 : {timedata[2][0]}\n    4 : {timedata[3][0]}\n    5 : {timedata[4][0]}\n    6 : {timedata[5][0]}\n    7 : {timedata[6][0]}\n    8 : {timedata[7][0]}\n    9 : {timedata[8][0]}")
+                    z=input()
+                    try:
+                        z=int(z)
+                        if z>0 and z < 10:
+                            self.js=self.SaveByNameN(self.js, "UInt32Property", 0, timedata[z-1][1],self.Data["date"]["time"])
+                            break
+                    except:
+                          try:
+                              if len(z)==0:
+                                  break
+                          except:
+                              pass
+            elif command == "edit time":
+                while True:
+                    print(f"Chosse new hour (put nothing to cancel) (bad modification could break/soft-lock the game but you may fix it (not sure) by re-editing the save)\n    1 : {timedata[0][0]}\n    2 : {timedata[1][0]}\n    3 : {timedata[2][0]}\n    4 : {timedata[3][0]}\n    5 : {timedata[4][0]}\n    6 : {timedata[5][0]}\n    7 : {timedata[6][0]}\n    8 : {timedata[7][0]}\n    9 : {timedata[8][0]}")
+                    z=input()
+                    try:
+                        z=int(z)
+                        if z>0 and z < 10:
+                            self.js=self.SaveByNameN(self.js, "UInt32Property", 0, timedata[z-1][1],self.Data["date"]["time"])
+                            break
+                    except:
+                          try:
+                              if len(z)==0:
+                                  break
+                          except:
+                              pass
+            elif command=="print":
+                for i in self.Data["date"].keys():
+                    print(i)
+            elif command == "get" or command[0:4] == "get ":
+                av=command.split(" ")
+                if len(av) == 2:
+                    try:
+                        print("")
+                        if av[1] == "time":
+                            print(timedata[(self.LoadByNameN(self.js, "UInt32Property", 0,self.Data["date"][av[1]])-257)][0])
+                        else:
+                            print(self.LoadByNameN(self.js, "UInt32Property", 0,self.Data["date"][av[1]]))
+                    except Exception as e:
+                        pass
+            elif command == "back":
+                break
+            elif command == "help":
+                print("")
+                print(f"back : to exit date editing\nprint : show editable value name\nedit 'value_name' : edit the value of 'value_name'\nget 'value_name' : get the value of 'value_name'")
+
+    
     def Money(self):
         while True:
             try:
@@ -661,8 +796,8 @@ if len(sys.argv) >1:
 else:
     while True:
         try:
-            a=input("Persona3 Reload sav path : ").replace('"',"")
-            #a=r"C:\Users\Célestin\AppData\Roaming\Sega\P3R\Steam\76561198877134182\SaveData002.sav"
+            #a=input("Persona3 Reload sav path : ").replace('"',"")
+            a=r"C:\Users\Célestin\AppData\Roaming\Sega\P3R\Steam\76561198877134182\SaveData002.sav"
             a=OpenSave().Load(os.path.split(os.path.abspath(a))[0],0,os.path.split(os.path.abspath(a))[1],True)
         except FileNotFoundError:
             print("Bad path\n")
