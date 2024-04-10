@@ -86,8 +86,8 @@ class Persona3Save:
                     self.LastName()
                 elif command == "edit money":
                     self.Money()
-                elif command == "edit date":
-                    self.Date()
+                #elif command == "edit date":
+                    #self.Date()
                 elif command == "edit playtime":
                     self.Playtime()
                 elif command == "edit firstname":
