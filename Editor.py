@@ -86,8 +86,8 @@ class Persona3Save:
                     self.LastName()
                 elif command == "edit money":
                     self.Money()
-                #elif command == "edit date":
-                    #self.Date()
+                elif command == "edit date":
+                    self.Date()
                 elif command == "edit playtime":
                     self.Playtime()
                 elif command == "edit firstname":
@@ -661,7 +661,7 @@ class Persona3Save:
             self.Data["dangerous"]={"player_x":self.LoadByNameN(self.js, "UInt32Property", 0,5219),"player_y":self.LoadByNameN(self.js, "UInt32Property", 0,5220),"player_z":self.LoadByNameN(self.js, "UInt32Property", 0,5221),"player_direction":self.LoadByNameN(self.js, "UInt32Property", 0,5218)}
     def Date(self):
         timedata= [["Very early morning",257],["Early morning",258],["Morning",259],["Lunch break",260],["Afternoon",261], ["After school",262],["Evening",263],["Dark Hour",264],["Late evening",265]]
-        daydata=[[30,31,30,31,31,30,31,30,31,31,28,31],{2009:["April","May","Juin","July","August","September","October","November","December"],2010:["January","Febuary","March"]}]
+        daydata=[[30,31,30,31,31,30,31,30,31,31,28,4],{2009:["April","May","Juin","July","August","September","October","November","December"],2010:["January","Febuary","March"]}]
         while True:
             command = input(f"(type help to see comand) (date editing) :  ")
             if command == "edit day":
