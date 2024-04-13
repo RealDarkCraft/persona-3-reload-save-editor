@@ -67,7 +67,7 @@ class Persona3Save:
         #print(self.debug_GetIdByValue(self.js,"UInt32Property",0,23))
         
         
-        #print(self.LoadByNameN(self.js, "UInt32Property", 0,99358))
+        print(self.LoadByNameN(self.js, "UInt32Property", 0,self.Data["personavalueid"]["persona"][1]))
         
         
         #Start 257 -> 265
@@ -75,8 +75,67 @@ class Persona3Save:
         
         
         
+        
+        
         #self.js=self.SaveByNameN(self.js, "UInt32Property", 0, 29,131125)
-        #print(self.LoadByNameN(self.js, "UInt32Property", 0,1928))
+        #print(self.LoadByNameN(self.js, "UInt32Property", 0,384))
+        #self.js=self.SaveByNameN(self.js, "UInt32Property", 0, 2166423558,384)
+        """
+        self.js=self.DelByNameN(self.js, "UInt32Property", 0,8149)
+        self.js=self.DelByNameN(self.js, "UInt32Property", 0,8150)
+        self.js=self.DelByNameN(self.js, "UInt32Property", 0,8151)
+        self.js=self.DelByNameN(self.js, "UInt32Property", 0,8152)
+        self.js=self.DelByNameN(self.js, "UInt32Property", 0,8153)
+        self.js=self.DelByNameN(self.js, "UInt32Property", 0,8156)
+        self.js=self.DelByNameN(self.js, "UInt32Property", 0,8157)
+        self.js=self.DelByNameN(self.js, "UInt32Property", 0,13134)
+        self.js=self.DelByNameN(self.js, "UInt32Property", 0,13135)
+        self.js=self.DelByNameN(self.js, "UInt32Property", 0,13136)
+        self.js=self.DelByNameN(self.js, "UInt32Property", 0,13137)
+        self.js=self.DelByNameN(self.js, "UInt32Property", 0,13138)
+        self.js=self.DelByNameN(self.js, "UInt32Property", 0,13141)
+        self.js=self.DelByNameN(self.js, "UInt32Property", 0,13142)
+        """
+        
+        """self.js=self.SaveByNameN(self.js, "UInt32Property", 0,4849665,8149) #
+        self.js=self.SaveByNameN(self.js, "UInt32Property", 0,42,8150)
+        self.js=self.SaveByNameN(self.js, "UInt32Property", 0,238780,8151)
+        self.js=self.SaveByNameN(self.js, "UInt32Property", 0,5898345,8152)
+        self.js=self.SaveByNameN(self.js, "UInt32Property", 0,104,8153)
+        self.js=self.SaveByNameN(self.js, "UInt32Property", 0,421075991,8156)
+        self.js=self.SaveByNameN(self.js, "UInt32Property", 0,32,8157)"""
+        
+        # Persona 3 slot 5
+        """self.js=self.SaveByNameN(self.js, "UInt32Property", 0,4849665,13134) #Persona ID (id+0001)
+        self.js=self.SaveByNameN(self.js, "UInt32Property", 0,50,13135) # Persona Level
+        self.js=self.SaveByNameN(self.js, "UInt32Property", 0,426604,13136) #Exp
+        self.js=self.SaveByNameN(self.js, "UInt32Property", 0,5898345,13137) #slot 1 skills (skill slot can have up to 4 skill)
+        
+        self.js=self.SaveByNameN(self.js, "UInt32Property", 0,20,13138)#Next level skills (skill id)
+        self.js=self.SaveByNameN(self.js, "UInt32Property", 0,5898345,13139) # modified test
+        self.js=self.SaveByNameN(self.js, "UInt32Property", 0,5898345,13140) # skill slot 3
+        self.js=self.SaveByNameN(self.js, "UInt32Property", 0,421075991,13141) # Fo, Ma, En, Ag
+        self.js=self.SaveByNameN(self.js, "UInt32Property", 0,32,13142) # Ch
+        self.js=self.SaveByNameN(self.js, "UInt32Property", 0,5898345,13143)"""
+        
+        #print(self.LoadByNameN(self.js, "UInt32Property", 0,215057))
+        
+        
+        
+        
+        
+        
+        
+        
+        """
+        location editing test
+        self.js=self.SaveByNameN(self.js, "UInt32Property", 0, 6684674,5211)
+        self.js=self.SaveByNameN(self.js, "UInt32Property", 0, 131137638,5212)
+        self.js=self.SaveByNameN(self.js, "UInt32Property", 0, 3210583002,5217)
+        self.js=self.SaveByNameN(self.js, "UInt32Property", 0, 1056975234,5218)
+        self.js=self.SaveByNameN(self.js, "UInt32Property", 0, 3246657938,5219)
+        self.js=self.SaveByNameN(self.js, "UInt32Property", 0, 3265991487,5220)
+        self.js=self.SaveByNameN(self.js, "UInt32Property", 0, 1137906483,5221)"""
         if mdd==0:
             while True:
                 command=input("(type help to see comand): ").lower()
@@ -88,8 +147,12 @@ class Persona3Save:
                     self.Money()
                 elif command == "edit date":
                     self.Date()
+                elif command == "edit persona" or command == "edit personas":
+                    self.Personas()
                 elif command == "edit playtime":
                     self.Playtime()
+                elif command == "edit difficulty":
+                    self.Difficulty()
                 elif command == "edit firstname":
                     self.FirstName()
                 elif command == "edit characters" or command == "edit character":
@@ -148,7 +211,8 @@ class Persona3Save:
         self.Data["characters"]={self.SaveHeader["firstname"].lower():{"current_pv":13070,"current_pc":13071,"level":13074,"exp":13075},"yukari":{"current_pv":13246,"current_pc":13247,"level":13263,"exp":13264},"junpei":{"current_pv":13422,"current_pc":13423,"level":13439,"exp":13440}}
         self.Data["dangerous"]={"player_x":self.LoadByNameN(self.js, "UInt32Property", 0,5219),"player_y":self.LoadByNameN(self.js, "UInt32Property", 0,5220),"player_direction":self.LoadByNameN(self.js, "UInt32Property", 0,5218)}#"player_z":self.LoadByNameN(self.js, "UInt32Property", 0,5221)}
         self.Data["socialrank"] = {"academics":5352,"charm":5354,"courage":5356}
-        self.Data["date"]={"time":1929,"day":1928,"dayskip":1930}
+        self.Data["date"]={"time":1929,"day":1928}#dayskip = 1930
+        self.Data["personavalueid"]={"persona":[13086,13098,13110,13122,13134,13146],"level":[13087,13099,13111,13123,13135,13147],"exp":[13088,13100,13112,13124,13136,13148],"skill_slot_1":[13089,13101,13113,13125,13137,13149],"skill_slot_2":[13090,13102,13114,13126,13138,13150],"skill_slot_3":[13091,13103,13115,13127,13139,13151],"skill_slot_4":[13092,13104,13116,13128,13140,13152],"fo_ma_en_ag":[13093,13105,13117,13129,13141,13153],"ch":[13094,13106,13118,13130,13142,13154]}#,"skill_slot_4":[0,0,0,0,13143,0]}
     def SaveChange(self):
         with tempfile.NamedTemporaryFile(mode='w',suffix='.json', delete=False) as temp_file:
             json.dump(self.js, temp_file, indent=2)
@@ -659,6 +723,27 @@ class Persona3Save:
                 print("")
                 print(f"back : to exit |dangerous editing\nprint : show editable value name\nedit 'value_name' : edit the value of 'value_name'\nget 'value_name' : get the value of 'value_name'")
             self.Data["dangerous"]={"player_x":self.LoadByNameN(self.js, "UInt32Property", 0,5219),"player_y":self.LoadByNameN(self.js, "UInt32Property", 0,5220),"player_z":self.LoadByNameN(self.js, "UInt32Property", 0,5221),"player_direction":self.LoadByNameN(self.js, "UInt32Property", 0,5218)}
+    def Difficulty(self):
+        difficultydata={"Beginner":2166366214,"Easy":2166374406,"Normal":2166390790,"Hard":2166423558,"Maniac":100794368}
+        difficultychoose=["Beginner","Easy","Normal","Hard","Maniac"]
+        while True:
+            print("Choose Difficulty (put nothing to cancel :")
+            counter=0
+            for i in difficultychoose:
+                counter+=1
+                print(f"    {counter} : {i}")
+            ss=input()
+            if ss == "":
+                break
+            else:
+                try:
+                    ss=int(ss)
+                    if ss > 0 and ss <= 5:
+                        self.js=self.SaveByNameN(self.js, "UInt32Property", 0, difficultydata[difficultychoose[ss-1]],384)
+                        break
+                except:
+                    pass
+    
     def Date(self):
         timedata= [["Very early morning",257],["Early morning",258],["Morning",259],["Lunch break",260],["Afternoon",261], ["After school",262],["Evening",263],["Dark Hour",264],["Late evening",265]]
         daydata=[[30,31,30,31,31,30,31,30,31,31,28,4],{2009:["April","May","Juin","July","August","September","October","November","December"],2010:["January","Febuary","March"]}]
@@ -700,7 +785,7 @@ class Persona3Save:
                                                     else:
                                                         try:
                                                             item = int(item)
-                                                            if (item > 0 and item < daydata[0][z2]):
+                                                            if (item > 0 and item <= daydata[0][z2]):
                                                                 item=(offset+item)-1
                                                                 self.js=self.SaveByNameN(self.js, "UInt32Property", 0, item,1928)
                                                                 self.js=self.SaveByNameN(self.js, "UInt32Property", 0, item,1930)
@@ -715,21 +800,6 @@ class Persona3Save:
                                 break
                         except:
                             pass
-            elif command == None:#"edit day-skip":
-                while True:
-                    print(f"Chosse new hour (put nothing to cancel) (bad modification could break/soft-lock the game but you may fix it (not sure) by re-editing the save)\n    1 : {timedata[0][0]}\n    2 : {timedata[1][0]}\n    3 : {timedata[2][0]}\n    4 : {timedata[3][0]}\n    5 : {timedata[4][0]}\n    6 : {timedata[5][0]}\n    7 : {timedata[6][0]}\n    8 : {timedata[7][0]}\n    9 : {timedata[8][0]}")
-                    z=input()
-                    try:
-                        z=int(z)
-                        if z>0 and z < 10:
-                            self.js=self.SaveByNameN(self.js, "UInt32Property", 0, timedata[z-1][1],self.Data["date"]["time"])
-                            break
-                    except:
-                          try:
-                              if len(z)==0:
-                                  break
-                          except:
-                              pass
             elif command == "edit time":
                 while True:
                     print(f"Chosse new hour (put nothing to cancel) (bad modification could break/soft-lock the game but you may fix it (not sure) by re-editing the save)\n    1 : {timedata[0][0]}\n    2 : {timedata[1][0]}\n    3 : {timedata[2][0]}\n    4 : {timedata[3][0]}\n    5 : {timedata[4][0]}\n    6 : {timedata[5][0]}\n    7 : {timedata[6][0]}\n    8 : {timedata[7][0]}\n    9 : {timedata[8][0]}")
@@ -764,12 +834,232 @@ class Persona3Save:
             elif command == "help":
                 print("")
                 print(f"back : to exit date editing\nprint : show editable value name\nedit 'value_name' : edit the value of 'value_name'\nget 'value_name' : get the value of 'value_name'")
-
+    def Personas(self):
+        personaid=[["( You'r Skill ID )",-1],["Io",1],["Isis",2],["Hermès",3],["Trismégiste",4],["Oni",60]]
+        skillid=[["( You'r Skill ID )",-1],["Agi",10],["Nu",89]]
+        skillname={-1:"( You'r Skill ID )",10:"Agi",89:"Nu"}
+        while True:
+            try:
+                answer = input("Choose personas slot (1-6) (put nothing to cancel): ")
+                answer = int(answer)
+                if answer >= 1 and answer <= 6:
+                    while True:
+                        command=input(f"(type help to see comand) (Personas slot {answer} editing): ").lower()
+                        if command == None:
+                            pass
+                        elif command == "edit persona":
+                            while True:
+                                counter=0
+                                print("Choose new personas (put nothing to cancel):")
+                                for i in personaid:
+                                    counter+=1
+                                    print(f"    {counter} : {i[0]}")
+                                persona_answer=input("")
+                                try:
+                                    persona_answer=int(persona_answer)
+                                    if persona_answer > 0 and persona_answer <= len(personaid) and personaid[persona_answer-1][1] != -1:
+                                        personas_new_value = int.from_bytes(binascii.unhexlify((personaid[persona_answer-1][1]).to_bytes(2, byteorder='little').hex()+"01"),byteorder="big")
+                                    elif persona_answer > 0 and persona_answer <= len(personaid):
+                                        while True:
+                                            persona_input_id = input("Persona ID (put nothing to cancle) (bad Persona ID could crash the game): ")
+                                            try:
+                                                persona_input_id = int(persona_input_id)
+                                                if persona_input_id >= 0:
+                                                    personas_new_value = int.from_bytes(binascii.unhexlify((persona_input_id).to_bytes(2, byteorder='little').hex()+"01"),byteorder="big")
+                                                    break
+                                            except:
+                                                if persona_input_id == "":
+                                                    break
+                                    verify_bool=False
+                                    for verify in self.Data["personavalueid"]["persona"]:
+                                        if verify != self.Data["personavalueid"]["persona"][answer-1]:
+                                            if self.LoadByNameN(self.js, "UInt32Property", 0,verify) == personas_new_value:
+                                                verify_bool = True
+                                    if verify_bool == False:
+                                        self.js=self.SaveByNameN(self.js, "UInt32Property", 0, personas_new_value,self.Data["personavalueid"]["persona"][answer-1])
+                                        break
+                                    elif verify_bool == True:
+                                        print("\n\nCan't have double persona")
+                                except Exception as e:
+                                    if persona_answer == "":
+                                        break
+                        elif command == "edit level":
+                            while True:
+                                new_level=input("Choose persona's level (99 max) (put nothing to cancel): ")
+                                try:
+                                    new_level=int(new_level)
+                                    if new_level > 0 and new_level <= 99:
+                                        self.js=self.SaveByNameN(self.js, "UInt32Property", 0, new_level,self.Data["personavalueid"]["level"][answer-1])
+                                        break
+                                except Exception as e:
+                                    print(e)
+                                    if new_level == "":
+                                        break
+                        elif command == "edit exp":
+                            while True:
+                                new_exp=input("Choose persona's exp (4294967295 max) (put nothing to cancel): ")
+                                try:
+                                    new_exp=int(new_exp)
+                                    if new_exp > 0 and new_exp <= 4294967295:
+                                        self.js=self.SaveByNameN(self.js, "UInt32Property", 0, new_exp,self.Data["personavalueid"]["exp"][answer-1])
+                                        break
+                                except:
+                                    if new_exp == "":
+                                        break
+                        elif command == "edit skill":
+                            skill_process=["skill_slot_1","skill_slot_2","skill_slot_3","skill_slot_4"]
+                            skill_list=[]
+                            try:
+                                for skill_i in skill_process:
+                                    if skill_i == "skill_slot_4":
+                                        pass
+                                    skill_tmp=self.LoadByNameN(self.js, "UInt32Property", 0,self.Data["personavalueid"][skill_i][answer-1])
+                                    skill_tmp=binascii.hexlify(int.to_bytes(skill_tmp,4,byteorder="big")).decode()
+                                    if skill_tmp[0:4] != "0000":
+                                        skill_list.append(int(skill_tmp[0:4],16))
+                                    if skill_tmp[4:len(skill_tmp)] != "0000":
+                                        skill_list.append(int(skill_tmp[4:len(skill_tmp)],16))
+                            except:
+                                pass
+                            while True:
+                                print("Skills : (type ('add' to add skill and 'del 'numero'' to remove skill) (you can't add to an non-empty place)")
+                                counter = 0
+                                for iss in skill_list:
+                                    counter+=1
+                                    try:
+                                        print(f"    {counter} : {skillname[iss]}")
+                                    except:
+                                        print(f"    {counter} : {iss}")
+                                command2 = input("Add or Del skill: ")
+                                try:
+                                    if command2.split(" ")[0].lower() == "del":
+                                        if len(command2.split(" ")) > 1:
+                                            if int(command2.split(" ")[1]) > 0 and int(command2.split(" ")[1]) <= len(skill_list):
+                                                counter2=0
+                                                lenn=len(skill_list)
+                                                for ibn in range(lenn):
+                                                    counter2+=1
+                                                    if counter2 == int(command2.split(" ")[1]):
+                                                        del skill_list[ibn]
+                                                        break
+                                    elif command2 == "add" and len(skill_list) < 8:
+                                        while True:
+                                            counter2=0
+                                            for ibn in skillid:
+                                                counter2+=1
+                                                print(f"    {counter2} : {ibn[0]}")
+                                            skill2_answer=input()
+                                            try:
+                                                skill2_answer=int(skill2_answer)
+                                                if skill2_answer > 0 and skill2_answer <= len(skillid):
+                                                    if skillid[skill2_answer-1][1] > -1:
+                                                        skill_list.append(skillid[skill2_answer-1][1])
+                                                    else:
+                                                        while True:
+                                                            skill_input_id = input("Skill ID (put nothing to cancle) (bad Skill ID could crash the game): ")
+                                                            try:
+                                                                skill_input_id = int(skill_input_id)
+                                                                if skill_input_id >= 0:
+                                                                    skill_list.append(skill_input_id)
+                                                                    break
+                                                            except:
+                                                                if skill_input_id == "":
+                                                                    break
+                                                    break
+                                            except Exception as e:
+                                                print(e)
+                                                if skill2_answer == "":
+                                                    break
+                                    elif command2 == "":
+                                        print(True)
+                                        counter=0
+                                        val1=""
+                                        val2=""
+                                        val3=""
+                                        val4=""
+                                        for iuio in skill_list:
+                                            counter+=1
+                                            if counter < 3:
+                                                val1+=(iuio).to_bytes(2, byteorder='big').hex()
+                                            elif counter < 5:
+                                                val2+=(iuio).to_bytes(2, byteorder='big').hex()
+                                            elif counter < 7:
+                                                val3+=(iuio).to_bytes(2, byteorder='big').hex()
+                                            else:
+                                                val4+=(iuio).to_bytes(2, byteorder='big').hex()
+                                            
+                                        if val1 != "":
+                                            self.js=self.SaveByNameN(self.js, "UInt32Property", 0, int(val1,16),self.Data["personavalueid"]["skill_slot_1"][answer-1])
+                                        else:
+                                            self.js=self.DelByNameN(self.js, "UInt32Property", 0,self.Data["personavalueid"]["skill_slot_1"][answer-1])
+                                        if val2 != "":
+                                            self.js=self.SaveByNameN(self.js, "UInt32Property", 0, int(val2,16),self.Data["personavalueid"]["skill_slot_2"][answer-1])
+                                        else:
+                                            self.js=self.DelByNameN(self.js, "UInt32Property", 0,self.Data["personavalueid"]["skill_slot_2"][answer-1])
+                                        if val3 != "":
+                                            self.js=self.SaveByNameN(self.js, "UInt32Property", 0, int(val3,16),self.Data["personavalueid"]["skill_slot_3"][answer-1])
+                                        else:
+                                            self.js=self.DelByNameN(self.js, "UInt32Property", 0,self.Data["personavalueid"]["skill_slot_3"][answer-1])
+                                        if val4 != "":
+                                            print(True)
+                                            self.js=self.SaveByNameN(self.js, "UInt32Property", 0, int(val4,16),self.Data["personavalueid"]["skill_slot_4"][answer-1])
+                                            print(False)
+                                        else:
+                                            self.js=self.DelByNameN(self.js, "UInt32Property", 0,self.Data["personavalueid"]["skill_slot_4"][answer-1])
+                                        break
+                                except:
+                                    pass
+                        elif command == "edit stats":
+                            varr=["Fo","Ma","En","Ag","Ch"]
+                            fomaenag = ""
+                            ch = ""
+                            for inns in varr:
+                                while True:#_ch
+                                    inputt=input(f"Set new {inns} (max 99): ")
+                                    try:
+                                        inputt=int(inputt)
+                                        if inputt > 0 and inputt < 100:
+                                            if inns == "Ch":
+                                                ch = self.js=self.SaveByNameN(self.js, "UInt32Property", 0, inputt,self.Data["personavalueid"]["ch"][answer-1])
+                                                break
+                                            else:
+                                                fomaenag+=(inputt).to_bytes(1, byteorder='little').hex()
+                                                break
+                                    except:
+                                        pass
+                            
+                            self.js=self.SaveByNameN(self.js, "UInt32Property", 0, int.from_bytes(binascii.unhexlify(fomaenag),byteorder="big"),self.Data["personavalueid"]["fo_ma_en_ag"][answer-1])
+                                            
+                        elif command=="print":
+                            print("")
+                            stat_show = False
+                            skill_show = False
+                            for i in self.Data["personavalueid"].keys():
+                                if (i == "fo_ma_en_ag" or i == "ch"):
+                                    if (stat_show == False):
+                                        print("stats")
+                                        stat_show=True
+                                elif ("skill_slot_" in i):
+                                    if (skill_show == False):
+                                        print("skill")
+                                        skill_show = True
+                                else:
+                                    print(i)
+                        elif command == "help":
+                            print("")
+                            print("back : to exit persona slot {answer} editing\nprint : show editable value\nedit 'value_name' : edit the value of 'value_name'")
+                        elif command == "back":
+                            break
+                        
+                        
+            except:
+                if answer == "":
+                    break
     
     def Money(self):
         while True:
             try:
-                new_name=input("New FirstName (9999999 max | put nothing to cancel): ")
+                new_name=input("New Money (9999999 max | put nothing to cancel): ")
                 new_name=int(new_name)
                 if new_name>=0 and new_name<=9999999:
                     self.js=self.SaveByNameN(self.js, "UInt32Property", 0, new_name,7257)
