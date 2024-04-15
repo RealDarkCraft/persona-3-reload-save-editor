@@ -1,7 +1,6 @@
 CREDITS = "https://github.com/afkaf/Python-GVAS-JSON-Converter"
 import json, binascii,time, os, tempfile, struct, sys
 from SavConverter import sav_to_json, read_sav, json_to_sav, load_json
-
 class Encryption:
     def __init__(self):
         pass
@@ -60,82 +59,6 @@ class Persona3Save:
             self.js=json.load(f)
         os.remove(i)
         self.LoadData()
-        #self.js=self.SaveByNameN(self.js, "UInt32Property", 0, 8,5352)# 16386
-        #print(self.debug_GetIdByValue(self.js,"UInt32Property",0,16386))
-        #print(self.debug_GetIdByValue(self.js,"UInt32Property",0,393312))
-        
-        #print(self.debug_GetIdByValue(self.js,"UInt32Property",0,23))
-        
-        
-        print(self.LoadByNameN(self.js, "UInt32Property", 0,self.Data["personavalueid"]["persona"][1]))
-        
-        
-        #Start 257 -> 265
-        #self.js=self.SaveByNameN(self.js, "UInt32Property", 0, 265,1929)
-        
-        
-        
-        
-        
-        #self.js=self.SaveByNameN(self.js, "UInt32Property", 0, 29,131125)
-        #print(self.LoadByNameN(self.js, "UInt32Property", 0,384))
-        #self.js=self.SaveByNameN(self.js, "UInt32Property", 0, 2166423558,384)
-        """
-        self.js=self.DelByNameN(self.js, "UInt32Property", 0,8149)
-        self.js=self.DelByNameN(self.js, "UInt32Property", 0,8150)
-        self.js=self.DelByNameN(self.js, "UInt32Property", 0,8151)
-        self.js=self.DelByNameN(self.js, "UInt32Property", 0,8152)
-        self.js=self.DelByNameN(self.js, "UInt32Property", 0,8153)
-        self.js=self.DelByNameN(self.js, "UInt32Property", 0,8156)
-        self.js=self.DelByNameN(self.js, "UInt32Property", 0,8157)
-        self.js=self.DelByNameN(self.js, "UInt32Property", 0,13134)
-        self.js=self.DelByNameN(self.js, "UInt32Property", 0,13135)
-        self.js=self.DelByNameN(self.js, "UInt32Property", 0,13136)
-        self.js=self.DelByNameN(self.js, "UInt32Property", 0,13137)
-        self.js=self.DelByNameN(self.js, "UInt32Property", 0,13138)
-        self.js=self.DelByNameN(self.js, "UInt32Property", 0,13141)
-        self.js=self.DelByNameN(self.js, "UInt32Property", 0,13142)
-        """
-        
-        """self.js=self.SaveByNameN(self.js, "UInt32Property", 0,4849665,8149) #
-        self.js=self.SaveByNameN(self.js, "UInt32Property", 0,42,8150)
-        self.js=self.SaveByNameN(self.js, "UInt32Property", 0,238780,8151)
-        self.js=self.SaveByNameN(self.js, "UInt32Property", 0,5898345,8152)
-        self.js=self.SaveByNameN(self.js, "UInt32Property", 0,104,8153)
-        self.js=self.SaveByNameN(self.js, "UInt32Property", 0,421075991,8156)
-        self.js=self.SaveByNameN(self.js, "UInt32Property", 0,32,8157)"""
-        
-        # Persona 3 slot 5
-        """self.js=self.SaveByNameN(self.js, "UInt32Property", 0,4849665,13134) #Persona ID (id+0001)
-        self.js=self.SaveByNameN(self.js, "UInt32Property", 0,50,13135) # Persona Level
-        self.js=self.SaveByNameN(self.js, "UInt32Property", 0,426604,13136) #Exp
-        self.js=self.SaveByNameN(self.js, "UInt32Property", 0,5898345,13137) #slot 1 skills (skill slot can have up to 4 skill)
-        
-        self.js=self.SaveByNameN(self.js, "UInt32Property", 0,20,13138)#Next level skills (skill id)
-        self.js=self.SaveByNameN(self.js, "UInt32Property", 0,5898345,13139) # modified test
-        self.js=self.SaveByNameN(self.js, "UInt32Property", 0,5898345,13140) # skill slot 3
-        self.js=self.SaveByNameN(self.js, "UInt32Property", 0,421075991,13141) # Fo, Ma, En, Ag
-        self.js=self.SaveByNameN(self.js, "UInt32Property", 0,32,13142) # Ch
-        self.js=self.SaveByNameN(self.js, "UInt32Property", 0,5898345,13143)"""
-        
-        #print(self.LoadByNameN(self.js, "UInt32Property", 0,215057))
-        
-        
-        
-        
-        
-        
-        
-        
-        """
-        location editing test
-        self.js=self.SaveByNameN(self.js, "UInt32Property", 0, 6684674,5211)
-        self.js=self.SaveByNameN(self.js, "UInt32Property", 0, 131137638,5212)
-        self.js=self.SaveByNameN(self.js, "UInt32Property", 0, 3210583002,5217)
-        self.js=self.SaveByNameN(self.js, "UInt32Property", 0, 1056975234,5218)
-        self.js=self.SaveByNameN(self.js, "UInt32Property", 0, 3246657938,5219)
-        self.js=self.SaveByNameN(self.js, "UInt32Property", 0, 3265991487,5220)
-        self.js=self.SaveByNameN(self.js, "UInt32Property", 0, 1137906483,5221)"""
         if mdd==0:
             while True:
                 command=input("(type help to see comand): ").lower()
@@ -153,6 +76,8 @@ class Persona3Save:
                     self.Playtime()
                 elif command == "edit difficulty":
                     self.Difficulty()
+                elif command == "edit sociallink" or command == "edit sociallinks" or command == "edit social-link" or command == "edit social-links" or command == "edit social link" or command == "edit social links":
+                    self.Sociallink()
                 elif command == "edit firstname":
                     self.FirstName()
                 elif command == "edit characters" or command == "edit character":
@@ -212,7 +137,8 @@ class Persona3Save:
         self.Data["dangerous"]={"player_x":self.LoadByNameN(self.js, "UInt32Property", 0,5219),"player_y":self.LoadByNameN(self.js, "UInt32Property", 0,5220),"player_direction":self.LoadByNameN(self.js, "UInt32Property", 0,5218)}#"player_z":self.LoadByNameN(self.js, "UInt32Property", 0,5221)}
         self.Data["socialrank"] = {"academics":5352,"charm":5354,"courage":5356}
         self.Data["date"]={"time":1929,"day":1928}#dayskip = 1930
-        self.Data["personavalueid"]={"persona":[13086,13098,13110,13122,13134,13146],"level":[13087,13099,13111,13123,13135,13147],"exp":[13088,13100,13112,13124,13136,13148],"skill_slot_1":[13089,13101,13113,13125,13137,13149],"skill_slot_2":[13090,13102,13114,13126,13138,13150],"skill_slot_3":[13091,13103,13115,13127,13139,13151],"skill_slot_4":[13092,13104,13116,13128,13140,13152],"fo_ma_en_ag":[13093,13105,13117,13129,13141,13153],"ch":[13094,13106,13118,13130,13142,13154]}#,"skill_slot_4":[0,0,0,0,13143,0]}
+        self.Data["personavalueid"]={"persona":[13086,13098,13110,13122,13134,13146,13158],"level":[13087,13099,13111,13123,13135,13147,13159],"exp":[13088,13100,13112,13124,13136,13148,13160],"skill_slot_1":[13089,13101,13113,13125,13137,13149,13161],"skill_slot_2":[13090,13102,13114,13126,13138,13150,13162],"skill_slot_3":[13091,13103,13115,13127,13139,13151,13163],"skill_slot_4":[13092,13104,13116,13128,13140,13152,13164],"fo_ma_en_ag":[13093,13105,13117,13129,13141,13153,13165],"ch":[13094,13106,13118,13130,13142,13154,13166]}#,"skill_slot_4":[0,0,0,0,13143,0]}
+        self.Data["sociallink"]={"aigis":5342,"nyx annihilation team":5340,"kamiki":5338,"suemitsu":5336,"hayase":5334,"mutatsu":5332,"tanaka":5330,"bebe":5328,"pharos":5326,"maiko":5324,"nishiwaki":5322,"hiraga":5320,"maya":5318,"fushimi":5316,"miyamoto":5314,"takeba":5312,"kitamura":5310,"odagiri":5308,"kirijo":5306,"yamagishi":5304,"tomochika":5302,"sees":5300}
     def SaveChange(self):
         with tempfile.NamedTemporaryFile(mode='w',suffix='.json', delete=False) as temp_file:
             json.dump(self.js, temp_file, indent=2)
@@ -403,30 +329,6 @@ class Persona3Save:
                     for i in new_name:
                         counter+=1
                         self.js=self.SaveByNameN(self.js, "UInt32Property", 0, int.from_bytes(binascii.unhexlify(i),byteorder="little"),17950+counter)
-                    
-
-                    
-                    """
-                    if len(new_name) < 5:
-                        a=1
-                    elif len(new_name) <9:
-                        a=2
-                    else:
-                        a=3
-                    if a == 1:
-                        self.js=self.SaveByNameN(self.js, "UInt32Property", 0, self.str_to_int(new_name),17951)
-                        self.js=self.DelByNameN(self.js, "UInt32Property", 0,17952)
-                        self.js=self.DelByNameN(self.js, "UInt32Property", 0,17953)
-                    elif a ==2:
-                        self.js=self.SaveByNameN(self.js, "UInt32Property", 0, self.str_to_int(new_name[0:4]),17951)
-                        self.js=self.SaveByNameN(self.js, "UInt32Property", 0, self.str_to_int(new_name[4:len(new_name)]),17952)
-                        self.js=self.DelByNameN(self.js, "UInt32Property", 0,17953)
-                    elif a ==3:
-                        self.js=self.SaveByNameN(self.js, "UInt32Property", 0, self.str_to_int(new_name[0:4]),17951)
-                        self.js=self.SaveByNameN(self.js, "UInt32Property", 0, self.str_to_int(new_name[4:8]),17952)
-                        self.js=self.SaveByNameN(self.js, "UInt32Property", 0, self.str_to_int(new_name[8:len(new_name)]),17953)
-                    """
-                        
                     print(new_name)
                     break
             elif len(new_name)==0:
@@ -451,34 +353,12 @@ class Persona3Save:
                     for i in new_name:
                         counter+=1
                         self.js=self.SaveByNameN(self.js, "UInt32Property", 0, int.from_bytes(binascii.unhexlify(i),byteorder="little"),17934+counter)
-                    
-                    """
-                    if len(new_name) < 5:
-                        a=1
-                    elif len(new_name) <9:
-                        a=2
-                    else:
-                        a=3
-                    if a == 1:
-                        self.js=self.SaveByNameN(self.js, "UInt32Property", 0, self.str_to_int(new_name),17935)
-                        self.js=self.DelByNameN(self.js, "UInt32Property", 0,17936)
-                        self.js=self.DelByNameN(self.js, "UInt32Property", 0,17937)
-                    elif a ==2:
-                        self.js=self.SaveByNameN(self.js, "UInt32Property", 0, self.str_to_int(new_name[0:4]),17935)
-                        self.js=self.SaveByNameN(self.js, "UInt32Property", 0, self.str_to_int(new_name[4:len(new_name)]),17936)
-                        self.js=self.DelByNameN(self.js, "UInt32Property", 0,17937)
-                    elif a ==3:
-                        self.js=self.SaveByNameN(self.js, "UInt32Property", 0, self.str_to_int(new_name[0:4]),17935)
-                        self.js=self.SaveByNameN(self.js, "UInt32Property", 0, self.str_to_int(new_name[4:8]),17936)
-                        self.js=self.SaveByNameN(self.js, "UInt32Property", 0, self.str_to_int(new_name[8:len(new_name)]),17937)
-                    """
                     print(new_name)
                     break
             elif len(new_name)==0:
                 break
     def Characters(self):
         characters = [self.SaveHeader["firstname"].lower(),"yukari","junpei"]
-        
         while True:
             print(f"\nChose the characters to edit (put nothing to exit 'Characters' editing) :\n    1 : {self.SaveHeader['firstname']}\n    2 : {characters[1][0:1].upper()+characters[1][1:len(characters[1])]}\n    3 : {characters[2][0:1].upper()+characters[2][1:len(characters[2])]}")
             a = input().lower()
@@ -566,8 +446,97 @@ class Persona3Save:
             
             elif a == "":
                 break
-    def Relationship(self):
-        pass
+    def Sociallink(self):
+        character_name=['SEES', 'Tomochika', 'Yamagishi', 'Kirijo', 'Odagiri', 'Kitamura', 'Takeba', 'Miyamoto', 'Fushimi', 'Maya', 'Hiraga', 'Nishiwaki', 'Maiko', 'Pharos', 'Bebe', 'Tanaka', 'Mutatsu', 'Hayase', 'Suemitsu', 'Kamiki', 'Nyx Annihilation Team', 'Aigis']
+        
+        while True:
+            print(f"\nChose the social-link to edit (put nothing to exit 'Social-Link' editing) :")
+            counter=0
+            for i in character_name:
+                counter+=1
+                print(f"    {counter} : {i}")      
+            a = input().lower()
+            if a in ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22']:
+                bbc=character_name[int(a)-1].lower()
+                bbc2=character_name[int(a)-1]
+                while True:
+                    command = input(f"(type help to see comand) (Social-Link editing {bbc2}): ")
+                    int("00000032",16)
+                    if command == "edit level":
+                        integer = self.LoadByNameN(self.js, "UInt32Property", 0,self.Data["sociallink"][bbc])
+                        if integer == None:
+                            integer = 0
+                        load=binascii.hexlify(int.to_bytes(integer,4,byteorder="big")).decode()
+                        level_load=load[4:len(load)]
+                        point_load=load[0:4]
+                        while True:
+                            new_level=input(f"New {bbc2} relation level (10 max | put nothing to cancel): ")
+                            try:
+                                new_level= int(new_level)
+                                if new_level > 0 and new_level <= 10:
+                                    if new_level == 10:
+                                        point_load = "0000"
+                                    load=point_load+binascii.hexlify(int.to_bytes(new_level,2,byteorder="big")).decode()
+                                    self.js=self.SaveByNameN(self.js, "UInt32Property", 0,int(load,16),self.Data["sociallink"][bbc])
+                                elif new_level == 0:
+                                    self.js=self.DelByNameN(self.js, "UInt32Property", 0,self.Data["sociallink"][bbc])
+                                new_bin="0b"
+                                for iuesn in self.Data["sociallink"].values():
+                                    tempp=self.LoadByNameN(self.js, "UInt32Property", 0,iuesn)
+                                    if tempp != None and tempp > 0:
+                                        new_bin+="1"
+                                    else:
+                                        new_bin+="0"
+                                new_bin=eval(new_bin)
+                                self.js=self.SaveByNameN(self.js, "UInt32Property", 0,new_bin,103)
+                                break
+                            except:
+                                if new_level == "":
+                                    break
+                    elif command == "edit point":
+                        integer = self.LoadByNameN(self.js, "UInt32Property", 0,self.Data["sociallink"][bbc])
+                        if integer == None:
+                            integer = 0
+                        load=binascii.hexlify(int.to_bytes(integer,4,byteorder="big")).decode()
+                        level_load=load[4:len(load)]
+                        point_load=load[0:4]
+                        while True:
+                            new_point=input(f"New {bbc2} relation points (100 max | put nothing to cancel): ")
+                            try:
+                                new_point= int(new_point)
+                                if new_point > 0 and new_point <= 100:
+                                    if int(level_load,16) < 10 and int(level_load,16) > 0:
+                                        load=binascii.hexlify(int.to_bytes(new_point,2,byteorder="big")).decode()+level_load
+                                        self.js=self.SaveByNameN(self.js, "UInt32Property", 0,int(load,16),self.Data["sociallink"][bbc])
+                                        break
+                                    else:
+                                        print("Can't edit point if relation level is 10 or 0")
+                                        break
+                            
+                            except Exception as e:
+                                print(e)
+                                if new_point == "":
+                                    break                    
+                    elif command=="print":
+                        print("level\npoints")
+                    elif command == "get" or command[0:4] == "get ":
+                        integer = self.LoadByNameN(self.js, "UInt32Property", 0,self.Data["sociallink"][bbc])
+                        load=binascii.hexlify(int.to_bytes(integer,4,byteorder="big")).decode()
+                        level_load=load[4:len(load)]
+                        point_load=load[0:4]
+                        av=command.split(" ")
+                        if len(av) == 2:
+                            if av[1] == "level" or av[1] == "levels":
+                                print(f'\n{int(level_load,16)}')  
+                            elif av[1] == "point" or av[1] == "points":
+                                print(f"\n{int(point_load,16)}")
+                    elif command == "back":
+                        break
+                    elif command == "help":
+                        print("")
+                        print(f"back : to exit {bbc2} relation editing\nprint : show editable value name\nedit 'value_name' : edit the value of 'value_name'\nget 'value_name' : get the value of 'value_name'")
+            elif a == "":
+                break
     def Socialrank(self):
         while True:
             command = input(f"(type help to see comand) (social-rank editing) :  ")
@@ -628,12 +597,6 @@ class Persona3Save:
             elif command == "help":
                 print("")
                 print(f"back : to exit social-rank editing\nprint : show editable value name\nedit 'value_name' : edit the value of 'value_name'\nget 'value_name' : get the value of 'value_name'")
-
-
-        
-        
-        
-        
     def Playtime(self):
         while True:#8205188
             try:
@@ -1049,9 +1012,7 @@ class Persona3Save:
                             print("")
                             print("back : to exit persona slot {answer} editing\nprint : show editable value\nedit 'value_name' : edit the value of 'value_name'")
                         elif command == "back":
-                            break
-                        
-                        
+                            break 
             except:
                 if answer == "":
                     break
@@ -1086,7 +1047,8 @@ if len(sys.argv) >1:
 else:
     while True:
         try:
-            a=input("Persona3 Reload sav path : ").replace('"',"")
+            #a=input("Persona3 Reload sav path : ").replace('"',"")
+            a=r"C:\Users\Célestin\AppData\Roaming\Sega\P3R\Steam\76561198877134182\SaveData003.sav"
             a=OpenSave().Load(os.path.split(os.path.abspath(a))[0],0,os.path.split(os.path.abspath(a))[1],True)
         except FileNotFoundError:
             print("Bad path\n")
