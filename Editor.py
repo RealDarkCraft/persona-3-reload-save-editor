@@ -1056,4 +1056,3 @@ else:
         except Exception as e:
             if "Failed to read HeaderProperty" in str(e):
                 raise Exception("Invalid file format (not persona 3 reload GVAS)")
-
