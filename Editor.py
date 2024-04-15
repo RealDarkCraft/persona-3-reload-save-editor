@@ -1047,8 +1047,7 @@ if len(sys.argv) >1:
 else:
     while True:
         try:
-            #a=input("Persona3 Reload sav path : ").replace('"',"")
-            a=r"C:\Users\Célestin\AppData\Roaming\Sega\P3R\Steam\76561198877134182\SaveData003.sav"
+            a=input("Persona3 Reload sav path : ").replace('"',"")
             a=OpenSave().Load(os.path.split(os.path.abspath(a))[0],0,os.path.split(os.path.abspath(a))[1],True)
         except FileNotFoundError:
             print("Bad path\n")
@@ -1057,3 +1056,4 @@ else:
         except Exception as e:
             if "Failed to read HeaderProperty" in str(e):
                 raise Exception("Invalid file format (not persona 3 reload GVAS)")
+
