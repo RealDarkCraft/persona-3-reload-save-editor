@@ -1,6 +1,4 @@
 # Persona3 Reload | Save Editor
-The Day modification options seem to have a problem (actually don't put date higher than 31/12/2009)
-
 Could work for other version like microsoft-store or PS4 (but i don't make test with it because i don't have these versions)
 
 ( For PS4/PS5 (and maybe for xbox/microsoft-store ?) save you need to decrypt the save yourself [you can use this method : https://www.youtube.com/watch?v=QA1lLxn_klA] (this method works for PS4 but I don't know if it work for PS5) )
