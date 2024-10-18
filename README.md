@@ -1,6 +1,7 @@
 # Persona3 Reload | Save Editor
 
 # SAVES ID FOR THE GAME SEEM TO HAVE CHANGED SO DONT USE THIS TOOL (execpet if it was an old saves)
+# (I checked and recent saves seem to have +4 for each id)
 
 Could work for other version like microsoft-store or PS4 (but i don't make test with it because i don't have these versions)
 
